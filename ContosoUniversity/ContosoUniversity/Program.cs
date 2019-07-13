@@ -16,7 +16,7 @@ namespace ContosoUniversity
     {
         public static void Main(string[] args)
         {
-            // Get a database context instance from the dependency injection container.
+            
             var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
@@ -24,13 +24,15 @@ namespace ContosoUniversity
                 var services = scope.ServiceProvider;
                 try
                 {
-                    // Call the seed method, passing to it the context.
+                    // Get a database context instance from the dependency injection container.
                     var context = services.GetRequiredService<SchoolContext>();
+
+                    // Call the seed method, passing to it the context.
                     DbInitializer.Initialize(context);
-                }
+                } //Dispose the context when the seed method is done.
                 catch (Exception ex)
                 {
-                    //Dispose the context when the seed method is done.
+                   
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred while seeding the database.");
                 }
